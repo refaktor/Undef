@@ -1,0 +1,29 @@
+<html><head>
+<script>module = {};</script>
+<script src="jsGoo.8.js"></script>
+<script src="parser1.peg.js"></script>
+<script src="interpreter1.js"></script>
+<script>
+function interpret(x) {
+  var p =  module.parser.parse("[ "+x+" ]");
+_d.$get("parsed").innerHTML = p;
+console.debug(p);
+var r = undef.evalu(p,0,{});
+console.debug(r);
+$("ctx").innerHTML = ;
+return r
+}
+</script>
+</head>
+<body onload="undef = Undef(1);"><h3>Undef</h3>
+
+<textarea id="code" cols="50" rows="3">add 100 inc 10</textarea><br/>
+<input type="button" value="interpret" onclick="document.getElementById('out').innerHTML = interpret(document.getElementById('code').value);" />
+<h5>parsed</h5>
+<pre id="parsed">...</pre>
+<h5>result</h5>
+<pre id="out">...</pre>
+<h5>context state</h5>
+<pre id="ctx">...</pre>
+
+</body></html>

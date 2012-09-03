@@ -1,0 +1,32 @@
+/**/
+
+start
+  = block
+
+block
+  = "[" space a:(serries)* "]" {return a}
+
+serries
+  = a:(block / number / setword / word / callword / string) space {return a}
+
+space
+  = " "+ 
+
+setword
+  = w:anychar+ ":" {return ["setword",w.join("")]} 
+
+
+callword
+  = "!" w:anychar+ {return ["callword",w.join("")]} 
+
+word
+  = w:anychar+ {return ["word",w.join("")]}
+
+string
+  = "'" t:(anychar+) "'" {return ["string",t.join("")]}
+
+number
+  = d:[0-9]+ {return ["number",parseInt(d.join(""),10)]}
+
+anychar
+  = [a-zA-Z0-9]
