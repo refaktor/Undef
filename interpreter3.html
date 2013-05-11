@@ -1,0 +1,30 @@
+<html><head>
+<script>module = {};</script>
+<script src="jsGoo.9.js"></script>
+<script src="parser3.peg.js"></script>
+<script src="interpreter3.js"></script>
+<script>
+  function interpret(x) {
+  var p =  module.parser.parse("[ "+x+" ]"); 
+  $get("parsed").innerHTML = p;
+  console.debug(p);
+  var r = bagel.evalu(p,1,{});
+  console.debug("RETURNED =>");
+  console.debug(r);
+  $get("ctx").innerHTML = _c.reduceObj(function(acc,k,v){return acc+"<li><b>"+k+"</b> "+v+"</li>"},r[2],"");
+  return r
+  }
+</script>
+</head>
+<body onload="bagel = Bagel(1);"><h3>Bagel</h3>
+<small>I hope you can figure out what's going on, it's very simple :)</small><br/><br/>
+<textarea id="code" cols="60" rows="4">num1: inc 33 pers: ctx [ name age ] num2: 120 person: makectx pers increment: fn [ x ] [ inc x ] num3 increment inc 10</textarea><br/>
+<input type="button" value="interpret" onclick="document.getElementById('out').innerHTML = interpret(document.getElementById('code').value);" />
+<h5>parsed</h5>
+<pre id="parsed">...</pre>
+<h5>result</h5>
+<pre id="out">...</pre>
+<h5>context state</h5>
+<pre id="ctx">...</pre>
+
+</body></html>
