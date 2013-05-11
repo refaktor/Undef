@@ -64,7 +64,7 @@ var Undef = function(dbg) {
 	unit: function(a) { return a },  
 	inc: function(a){return a + 1},
 	add: function(a,b) { return a + b },  
-	alert: function(){alert(code)},
+	alert: function(a){alert(a)},
     }
 	
     return this;
