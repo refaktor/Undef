@@ -1,0 +1,101 @@
+#
+## b@gel ## just playing with ideas
+#
+# bag based programming language (vs, stack) where complex things use contexts to avoid complexity
+# bag vs. stack --- it picks the first propper object (should be fully deterministic) from bag vs. the top item on stack 
+#
+# inspired by factor, rebol ...
+#
+# stack languages are ideal clear minimalistic programming languages, if you forget about stack shuffling words which are pure noise
+#
+# we avoid stack words by bag idea, with a lot of contexts (complex combinations of values go into context -- even local/temporary contexts)
+# and by (guards with leaks ..) and with stack expressions ab|ba swap , a|aa dup, abc|cab ...
+#
+
+
+person: name surname age location(city!)      	     	  # two newlines separate contexes, functions ...
+
+city: name country(country!) lat long
+
+country: name
+
+
+birthday@ (person!)								# takes and returns person!
+	  age> 1 + >age
+
+present# (person!)
+	 "Hi, I am " name> join print
+
+present# (city!)
+	 name> " from " city> name> join3 print					# name> here takes from the first propper context it finds on stack (which is city)
+
+locate@ (person! city! -- person!)  	  					# takes 2 types of objects and returns one
+	>city
+
+where-from# (person!)								# separate pure functions from functions with effects
+	    >city present
+
+
+person! 30 >age "jim" >name ( city! "Ljublana" >name ( country! "Slovenia" >name .) >country .) >country where-from		 
+
+	   	      	      	    	       	       			   	# ( preserves the stack it got and potentially leaks objects with . )
+
+make-person@ (age name city country -- person!)
+	     abcd|dcba  #stack effect
+	     person! >age >name ( city! >name ( country! >name .) >country .) >city
+
+make-person@ (age name city country -- person!)
+	     abcd|dcba  #stack effect
+	     person! >age >name ( city! >name ( country! >name .) >country .) >city
+
+
+#without stack expression
+
+make-person@ (age name city country -- person!)					
+	     person! ( city! ( country! >name .) >country >name .) >city >name >age
+
+
+
+# challenge: it would make sense that it finds a city if there already is one in some global scope links to it, otherwise create new one
+# this function creates a person, if there is already a city with that name it links it to it, otherwise creates a city and stores it in some global context
+# the same with country, if it creates a city it tries to link it with existing country, otherwise creates it and stores it in some global context
+
+
+make-person@ (age name city country -- person!)					
+	     person! ( [ :city find-city | city! ( [ :country get-country | country! >name ( store-country ) ] any .) >country >name ( store-country ) ] any .) >city >name >age
+
+
+# [ ] is a quotation in this cade or a block that is tried to be executed as code
+# [ | ] is a series of quotations [ [ ] [ ] ]
+# any functions similar as REBOL's any
+# ( ) preserve the stack, we want to store that thing without even thinking of fucking anything up there
+# :<name> retrieves a object by stack effect name (we could have second and first there, but it just makes less obvious code without any benefit except feeling the stack glory
+# person! city! puts an empty context on stack
+
+
+# can we determine types with names?
+
+make-person@ (number!age string!name city!city country!country -- person!)
+	     person! ( [ :city find-city | city! ( [ :country get-country | country! >name ( store-country ) ] any .) >country >name ( store-country ) ] any .) >city >name >age
+
+# since here all types are different we wouldn't have to worry about stack order any more?
+# >value takes the value but keeps the context on stack , we should ahve similar method for keeping the value on stack .>value
+
+# all things are basically blocks and transformation should be very! simple, all is basically just context sugar (or context clearing out)
+
+birthday@ (person!)
+	  age> 1 + >age
+
+==
+
+birthday@ [ person! ] [ age> 1 + >age ]
+
+
+# of course we will need conditionals and loops etc which are made as in REBOL and factor out of blocks and orditary functions
+
+list-users# ([person!])
+	    [ name> newline join print ] foreach
+
+norm-name@ (string!name)
+	    empty? [ "sir" ] [ name uppercase ] either
+
