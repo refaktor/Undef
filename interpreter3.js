@@ -2,7 +2,7 @@ var Bagel = function(dbg) {
 
     var d = function(x){if(dbg){console.log(x)};return x}
 
-    this.evalu = function(block, pos, state) { 	d(block);d("%%");d(pos);d(state);
+    this.evalu = function(block, pos, state) { 	//d(block);d("%%");d(pos);d(state);
 	while (pos < block.length) {
 	    e = evalexpr(block,pos,state);
 	    pos = e[1];
@@ -12,11 +12,11 @@ var Bagel = function(dbg) {
 	return e;
     }
     
-    var evalexpr = function(block,pos,state) {	d("--->>>");d(pos);d(block[pos]);d("<<<---");
+    var evalexpr = function(block,pos,state) {	//d("--->>>");d(pos);d(block[pos]);d("<<<---");
 	switch(block[pos][0]) 
 	    { 
 	    case "word": 
-		return d(proc_word(block[pos][1],block,pos,state));
+		return proc_word(block[pos][1],block,pos,state);
 	    case "setword": 
 		return proc_setword(block[pos][1],block,pos,state);
 	    case "number":
@@ -30,7 +30,7 @@ var Bagel = function(dbg) {
     
     var evalword = function(word,block,pos,state) {	//d("WW-->>>");d(pos);d(block);d("<<<---");
 	if (state[word] instanceof Array) {
-	    switch(d(state[word][0]))
+	    switch(state[word][0])
     	    { 
 	    case "fndef": 
 		return call_user_fn(state[word][1],state[word][2],block,pos,state);
@@ -54,13 +54,14 @@ var Bagel = function(dbg) {
     {
 	if (word == "yield") {                            // TODO: we should define functs similar to native (example: selfaware which accept word,block,pos,state and are meant for)
 	                                                  // and dispatch to them, not have if else here directly
-	    d("/////////////////////////////////77777777777");
+	                                                  // r/now we only yield at expression bounds, but I think we could anywhere (inline)
+	    //d("/////////////////////////////////77777777777");
 	    e = evalexpr(block,pos+1,state);
 	    pos = e[1];
 	    state = e[2];
 	    return [e[0],pos,state,"yield",block];	//TODO: the freezed state from yield should be it's own type
 	} else if (word == "cont") {
-	    d("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\....");
+	    //d("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\....");
 	    e = evalexpr(block,pos+1,state);
 	    pos = e[1];
 	    state = e[2];

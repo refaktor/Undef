@@ -8,7 +8,9 @@
   var p =  module.parser.parse("[ "+x+" ]"); 
   $get("parsed").innerHTML = JSON.stringify(p);
   console.debug(p);
-  var r = bagel.evalu(p,1,{});
+  for(var i=0;i<10000;i+=1) { //we interpret it 10000 times .. to have a basic feeling of what is slow or not :)
+    var r = bagel.evalu(p,1,{});
+  }
   console.debug("RETURNED =>");
   console.debug(r);
   $get("ctx").innerHTML = _c.reduceObj(function(acc,k,v){return acc+"<li><b>"+k+"</b> "+JSON.stringify(v)+"</li>"},r[2],"");
@@ -18,8 +20,9 @@
 </head>
 <body onload="bagel = Bagel(1);"><h3>Bagel - simple and dumb toy interpreter (130 loc)</h3>
 <small>we set some words, call some native funcs, create a context definition and instantiate it, create user defined function and call it, try to yield from func and cont(inue) it again (to see if we can)</small><br/>
-<textarea id="code" cols="60" rows="4">num1: inc 33 pers: ctx [ name age ] num2: 120 person: makectx pers increment: fn [ x ] [ yield inc x inc inc x ] num3: increment 10 num4: cont num3</textarea><br/>
-<input type="button" value="interpret" onclick="Res = interpret(document.getElementById('code').value); document.getElementById('out').innerHTML = '<b>'+Res[0]+'</b> <small>'+JSON.stringify(Res)+'</small>'" />
+<textarea id="code" cols="60" rows="4">num1: inc 33 pers: ctx [ name age ] num2: 120 person: makectx pers increment: fn [ x ] [ yield inc x inc inc x ] num3: increment 10 num4: cont num3</textarea>
+<small><a href="javascript:void(0)" onclick="$get('code').value = 'a: add 1 b: add 2 c: inc 1'">sample1</a> <a href="javascript:void(0)" onclick="$get('code').value = 'bod: [ add a b ] c: 100 my-add: fn [ a b ] bod z: my-add inc 10 c'">sample2</a> </small><br/>
+<input type="button" value="interpret" onclick="Res = interpret($get('code').value); document.getElementById('out').innerHTML = '<b>'+Res[0]+'</b> <small>'+JSON.stringify(Res)+'</small>'" />
 <h5>parsed</h5>
 <div id="parsed" class="small">...</div>
 <h5>result (whole: result, position, state)</h5>
