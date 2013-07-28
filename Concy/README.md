@@ -1,25 +1,26 @@
-===Conc (concept bla bla lang)
+#Concy (concept bla bla lang)
 
 there are tuples (as in factor)
 
-jim= > name: janko age: 20 .
+jim= [ name: janko age: 20 ]
+
 
 concept is a rule that can match or not match the tuple
 
-person= > conc name: required string age: optional 0 integer .
+person= [ conc name: required string age: optional 0 integer ]
 
-verbs are only monadic or diadic as in J
 
-(+)inc-age= f > person : n: number . >
+verbs are only monadic or diadic as in J. they also need to match a concept (generic functions)
+
+(+)inc-age= f [  person n: number |  
 	age: age + 1
-  :
+  |
 	age: age + n
-.
+]
 
-(=)set-name= f > person : n: str . >
-:
+(=)set-name= f [ person n: str ||
 	name: n
-.
+]
 
 
 + jim
@@ -27,16 +28,14 @@ verbs are only monadic or diadic as in J
 . jim
 name: "janko" age: 21
 
-jim + 5
-jim = "matej"
+. jim + 5
+name: "janko" age: 26
 
-
-. jim
+. jim = "matej"
 name: "matej" age: 26
 
 
-
-# runtime optimisation
+### runtime optimisation
 
 every verb doesn't have to check if the entering tuple is of correct type. but the first time tuple is checked for type a flag can be 
 added to the tuple for that type. this also helps find the right verb method for given scentence
@@ -48,7 +47,7 @@ verbs vork on sets of tuples as tuples themselves in minimal cruft manner
 we need apply verbs to sets and to arrays to map / reduce / filter / seek them
 
 
-# how would some practical programming look with monadic / diadic only ?
+### how would some practical programming look with monadic / diadic only ?
 
 con= connect-sqlite %main.db
 
@@ -66,35 +65,37 @@ users -<< f > a "users:\n" x . > a:name + "\n" . ( we solved the need for more a
 
 
 
-# if we revert to more classic block syntax
+if we revert to more classic block syntax
+
+
+  users -<< f [ a "users:\n" x | a:name + "\n" ]                               (: we solved the need for more args here with default value in function  -<< reduce :)
+
+  ( users -:[ [ name: uppercase name ] ) -<< f [ a "users:\n" x | a:name + "\n" ]                        (: -:[ map tuples :)
 
 
 
-users -<< f [ a "users:\n" x | a:name + "\n" ]                               (: we solved the need for more args here with default value in function  -<< reduce :)
-
-( users -:[ [ name: uppercase name ] ) -<< f [ a "users:\n" x | a:name + "\n" ]                        (: -:[ map tuples :)
-
-
-
-( users inject-a [
-  name-o: uppercase name
-  age-o: (str age) + " year" + (age > 1) ? [ "s" | "" ]                      (: there is probably a conflict with this blocking code > . and monadic diadic operators)
-]) templatize "<h1>{name-o}</h1><small>{age-o}</small>"
+  ( users inject-a [
+    name-o: uppercase name
+    age-o: (str age) + " year" + (age > 1) ? [ "s" | "" ]                      (: there is probably a conflict with this blocking code > . and monadic diadic operators)
+  ]) templatize "<h1>{name-o}</h1><small>{age-o}</small>"
 
 
 
-(: ' is a monadic operation that flags passing value with concept (in this case that it's a sqlit-db) so that the sqlite general method connect is used :)
 
-(((connect 'sqlite-db %main.db ) query "select * from user") inject-# [      
-  name-o: uppercase name
-  age-o: (str age) + " year" + (age > 1) ? [ "s" | "" ]                      (: there is probably a conflict with this blocking code > . and monadic diadic operators)
-]) templatize "<h1>{name-o}</h1><small>{age-o}</small>"
+' is a monadic operation that flags passing value with concept (in this case that it's a sqlit-db) so that the sqlite general method connect is used
 
-
-(: # - is general symbol for array  % is for set (or something else might be better) :)
+  (((connect 'sqlite-db %main.db ) query "select * from user") inject-# [      
+    name-o: uppercase name
+    age-o: (str age) + " year" + (age > 1) ? [ "s" | "" ]                      (: there is probably a conflict with this blocking code > . and monadic diadic operators)
+  ]) templatize "<h1>{name-o}</h1><small>{age-o}</small>"
 
 
-#for experiment what if we reverse the dyadic arg from previous example
+is general symbol for array  % is for set (or something else might be better)
+
+
+###reverse that
+
+for experiment what if we reverse the dyadic arg from previous example
 
 
 "<h1>{name-o}</h1><small>{age-o}</small>" templatize [      
@@ -106,7 +107,9 @@ users -<< f [ a "users:\n" x | a:name + "\n" ]                               (: 
 
 
 
-#what if we just reverse the order than so that contrary to J evaluation goes left to right (does this screw the monadic/diadic in any way .. have to see reason for it in J)
+###and reverse that
+
+what if we just reverse the order than so that contrary to J evaluation goes left to right (does this screw the monadic/diadic in any way .. have to see reason for it in J)
 
 connect 'sqlite-db %main.db query "select * from user" inject-# [      
   name-o: uppercase name
