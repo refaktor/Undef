@@ -98,12 +98,12 @@ is general symbol for array  % is for set (or something else might be better)
 for experiment what if we reverse the dyadic arg from previous example
 
 
-"<h1>{name-o}</h1><small>{age-o}</small>" templatize [      
-  name-o: uppercase name
-  age-o: (str age) + " year" + (age > 1) ? [ "s" | "" ]                      (: there is probably a conflict with this blocking code > . and monadic diadic operators)
-] inject-# "select * from user" query connect 'sqlite-db %main.db
+  "<h1>{name-o}</h1><small>{age-o}</small>" templatize [      
+    name-o: uppercase name
+    age-o: (str age) + " year" + (age > 1) ? [ "s" | "" ]                      (: there is probably a conflict with this blocking code > . and monadic diadic operators)
+  ] inject-# "select * from user" query connect 'sqlite-db %main.db
 
-(: how do we know that connect must be called monadically ... have to look a little deeper :)
+how do we know that connect must be called monadically ... have to look a little deeper
 
 
 
@@ -111,10 +111,10 @@ for experiment what if we reverse the dyadic arg from previous example
 
 what if we just reverse the order than so that contrary to J evaluation goes left to right (does this screw the monadic/diadic in any way .. have to see reason for it in J)
 
-connect 'sqlite-db %main.db query "select * from user" inject-# [      
-  name-o: uppercase name
-  age-o: (str age) + " year" + (age > 1) ? [ "s" | "" ]
-] templatize "<h1>{name-o}</h1><small>{age-o}</small>"
+  connect 'sqlite-db %main.db query "select * from user" inject-# [      
+    name-o: uppercase name
+    age-o: (str age) + " year" + (age > 1) ? [ "s" | "" ]
+  ] templatize "<h1>{name-o}</h1><small>{age-o}</small>"
 
 
 
