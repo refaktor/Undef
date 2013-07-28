@@ -81,3 +81,26 @@ start-time-server= f [| 8888 make-server-with :handler ]
 
 MAIN: start-time-server
 ```
+
+###blocks
+
+[ | | ] == [ [ ] [ ] [ ] ]
+
+###ato currying or someting
+
+
+if interpreter would detect that it's missing one left val and make a monadic func
+
+    add5: f [| add 5 ]
+
+    add5 10
+
+    > 15
+
+    add5mul: f [| add 5 mul ]
+
+    5 add5mull 10
+
+    > 100
+
+this doesn't seem to make much practical sense ... bacause if we want so me arg inthere it all falls down
