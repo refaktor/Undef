@@ -12,7 +12,27 @@ concept is a rule that can match or not match the tuple
 person= [ conc name: required string age: optional 0 integer ]
 ```
 
-verbs are only monadic or diadic as in J. they also need to match a concept (generic functions)
+we can define concept converters and they get called with flagging something as concept ('<concept-name>)
+example of converting a string to url concept
+
+```
+read 'url "http://www.example.com/" join page
+```
+
+why do we want this? because major goal is, plainly said, to be able to use generic short (conflicting) 
+verbs and concept matching defines the selection of the right one.
+
+```
+connect 'sqlite-db "file.db"
+
+connect redis://local
+
+con= connect my-custom-thing
+
+con select [ node: 1000 neighbours-distance: 3 weighted: true ]
+```
+
+verbs are only monadic or diadic as in J. they also need to match a concept (as generic functions)
 
 ```
 + jim
