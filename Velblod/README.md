@@ -1,6 +1,6 @@
 #Velblot
 
-####forget OO this is "one hump Camel case oriented language"
+####__forget OO this is "one hump Camel case oriented language"__
 
 Just toying around w/ (stupid?) ideas again.
 
@@ -116,11 +116,15 @@ Could we explicitly mark where . is neede without making code too ugly?? With a 
 
 In this case Funcs that use refinements need , and they need . others don't. It's a little weird .. but maybe this is still better than the "." overkill and absolutely explicit call structure. because with that we are just lisp with Upperaca and "." instad of ( and ).
 
-the refinements would offer also something like generic methods / pattern matching
+###
+
+The refinements would offer also something like generic methods / pattern matching
 
 ```
-Read: Func ( 'http, url,  '.... ) ... basically "," represents OR only after all the parts are with sequence in front .. before that sequences and/or arguments are mandatory. This could be explicitly
-Read: Func ( 'smtp, domain, ... '.... ) ... basically "," represents OR only after all the parts are with sequence in front .. before that sequences and/or arguments are mandatory. This could be explicitly```
+Read: Func ( 'http, url,  '.... ) ...
+Read: Func ( 'smtp, domain, ... '.... ) ... 
 ```
+
+Basically "," represents OR only after all the parts are with sequence in front .. before that sequences and/or arguments are mandatory. This could be explicitly....
 
 
