@@ -1,8 +1,10 @@
-#Velblot, forget OO, FP, this is "one hump Camel case based language"
+#Velblot
 
-Just toying around w/ ideas again. Don't know if this comes all the way through (i.e. works at all really).
+##forget OO this is "one hump Camel case oriented language"
 
-Progression:
+Just toying around w/ ideas again.
+
+###Reasoning:
 
  - Lisp evals lists by default except when marked otherwise '(x 1)
  - Rebol doesn't eval lists (blocks) by default, but evals words by default unless specified otherwise 'lit-word
@@ -11,13 +13,26 @@ Progression:
 Which (maybe) enables us to again explore new directions. Like rebol could, and came up with some cool stuff.
 
 
+###Some contrains (e.i. rules)
+
+My 2 rules for any new language to make any sense:
+
+ - It HAS to be homoiconic !
+ - It should be expression focused (not statements, expressions except when you really do mutable stuff) !
+
+A question to keep in mind:
+
+ - Is the langauge a canvas?
+
+###Braindump (type as I think)
+
 ```
 > Calculate Time from 14:20 to Now
 ```
 Which would look in Python as:
 
 ```
-> Time.calculate('time', from='14:20', to=Now())
+> Time.calculate(from='14:20', to=Now())
 
 ```
 Or in Rebol as:
@@ -56,11 +71,13 @@ So can we add some explicit structure.
 > If Success? Read http://www.example.com then call :OnLoaded ( Show message "page will loading async" with info icon ) else ( Show message "show probably won't load" with alert icon )
 ```
 
-Or to be more clear .. where does the else belong:
+Yep there is a problem.. To make it clear in minimal example (remember "If" is a funtion as other are, "else" is a refinement) 
 
 ```
 > If A If B ( Msg 1 ) else ( Msg 2 )
 ```
+
+###The dots?
 
 What if we say each function call is a scentence (it does begin with Capital letter) so it should end with a ".". How noisy would it be???
 
@@ -75,12 +92,19 @@ Not too bad in this examples.. basically we are back at Lisp now .. with explici
 > Print Add 2 Inc 3...
 > Print Add Inc Mul 2 3.. Inc 3...
 ```
+
 It's not thaaaaaaat bad, but we're back at explicit now :( .. OTOH we don't need ocasional parens.
+
+###Function definition
+
+How could we define the "arguments":
 
 ```
 > Read: Func ( url , 'then 'call callback , 'with 'headers headers, 'only 'head )
   	     ( ... the sequence sets variables along the way , "," stands for "OR", if no variable creates a flag Only-head in our case )
 ```
+
+###Commas?
 
 Could we make . required only in cases where there are refinements? Seems unlikely.. or with that we create the problem we created "." in the first place again.
 Could we explicitly mark where . is neede without making code too ugly?? With a , after Func maybe??
@@ -98,4 +122,5 @@ the refinements would offer also something like generic methods / pattern matchi
 Read: Func ( 'http, url,  '.... ) ... basically "," represents OR only after all the parts are with sequence in front .. before that sequences and/or arguments are mandatory. This could be explicitly
 Read: Func ( 'smtp, domain, ... '.... ) ... basically "," represents OR only after all the parts are with sequence in front .. before that sequences and/or arguments are mandatory. This could be explicitly```
 ```
- stated or just parsed and flagged at eval time.
+
+
