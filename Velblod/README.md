@@ -1,8 +1,8 @@
 #Velblot
 
-##forget OO this is "one hump Camel case oriented language"
+####forget OO this is "one hump Camel case oriented language"
 
-Just toying around w/ ideas again.
+Just toying around w/ (stupid?) ideas again.
 
 ###Reasoning:
 
