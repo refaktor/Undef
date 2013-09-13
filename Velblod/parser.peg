@@ -1,0 +1,55 @@
+start
+  = block
+
+block
+  = "[" space a:(serries)* "]" { a.unshift("block"); return a}
+
+evblock
+  = b:blockword space a:(serries)* . { a.unshift(b);
+a.unshift("evblock"); return a}
+
+serries
+  = a:(block / evblock / number / setword / coword / ciword / word / ctxword / string) space {return a}
+
+space
+  = [ \n\t]+
+
+setword
+  = w1:ucchar w:anychar+ ":" {return ["setword",w1+w.join("")]}
+
+coword
+  = w:anychar+ ">" {return ["coword",w.join("")]}
+
+ciword
+  =  ">" w:anychar+ {return ["ciword",w.join("")]}
+
+
+ctxword
+  = "!" w:anychar+ {return ["callword",w.join("")]}
+
+word
+  = w:anychar+ {return ["word",w.join("")]}
+
+evword
+  = w1:ucchar w:anychar+ {return ["word",w1+w.join("")]}
+
+string
+  = "'" t:(anychar+) "'" {return ["string",t.join("")]}
+
+number
+  = d:[0-9]+ {return ["number",parseInt(d.join(""),10)]}
+
+anychar
+  = [a-zA-Z0-9_\-\?]
+
+ucchar
+  = [A-Z]
+
+lcchar
+  = [a-z]
+
+blockword
+  = w:anychar+ "," {return ["evword",w.join("")]}
+
+
+
