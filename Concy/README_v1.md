@@ -1,10 +1,15 @@
 #Concy (concept bla bla lang)
 
+
+## Tuples
+
 there are tuples (as in factor)
 
 ```
 jim= [ name: janko age: 20 ]
 ```
+
+##Concepts
 
 concept is a rule that can match or not match the tuple
 
@@ -12,7 +17,18 @@ concept is a rule that can match or not match the tuple
 person= [ conc name: required string age: optional 0 integer ]
 ```
 
-verbs are only monadic or diadic as in J. they also need to match a concept (generic functions)
+##Concept converters
+
+we can define concept converters and they get called with flagging something as concept ('<concept-name>)
+example of converting a string to url concept:
+
+```
+read 'url "http://www.example.com/" join page
+```
+
+##Verbs
+
+verbs are only monadic or diadic as in J. they also need to match a concept (as generic functions)
 
 ```
 (+)inc-age= f [  person n: number |  
